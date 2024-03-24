@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employees</title>
+    <style>
+      /* Navbar styles */
+      .navbar {
+        overflow: hidden;
+        background-color: #4caf50; /* Light green accent color */
+      }
+
+      .navbar a {
+        float: left;
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none;
+      }
+
+      .navbar a:hover {
+        background-color: #ddd;
+        color: black;
+      }
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        /* align-items: center; */
+      }
+      .container {
+        /* width: 80%; */
+      }
+      h2 {
+        text-align: center;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+      th,
+      td {
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+      tr:hover {
+        background-color: #f2f2f2;
+      }
+      form {
+        display: inline;
+      }
+      input[type="text"] {
+        padding: 4px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+      }
+      button {
+        padding: 4px 8px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+      .container{
+        width: 95%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="navbar">
+        <a href="/">Home</a>
+        <a href="/projects">Projects</a>
+        <a href="/employees">Employees</a>
+        <a href="/resources">Resources</a>
+        <a href="/tasks">Tasks</a>
+        <a href="/clients">Clients</a>
+      </div>
+      <h2>Employees</h2>
+
+      <!-- Table to display employees -->
+      <table>
+        <tr>
+          <th>Employee ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Contact Number</th>
+          <th>Designation</th>
+          <th>Skills</th>
+          <th>Project ID</th>
+          <th>Actions</th>
+        </tr>
+        {% for employee in employees %}
+        <tr>
+          <td>{{ employee.EmployeeID }}</td>
+          <td>{{ employee.FirstName }}</td>
+          <td>{{ employee.LastName }}</td>
+          <td>{{ employee.ContactNumber }}</td>
+          <td>{{ employee.Designation }}</td>
+          <td>{{ employee.Skills }}</td>
+          <td>{{ employee.ProjectID }}</td>
+          <td>
+            <form
+              method="POST"
+              action="/modify_employee/{{ employee.EmployeeID }}"
+            >
+              <input
+                type="hidden"
+                name="employee_id"
+                value="{{ employee.EmployeeID }}"
+              />
+              <input
+                type="text"
+                name="first_name"
+                value="{{ employee.FirstName }}"
+              />
+              <input
+                type="text"
+                name="last_name"
+                value="{{ employee.LastName }}"
+              />
+              <input
+                type="text"
+                name="contact_number"
+                value="{{ employee.ContactNumber }}"
+              />
+              <input
+                type="text"
+                name="designation"
+                value="{{ employee.Designation }}"
+              />
+              <input type="text" name="skills" value="{{ employee.Skills }}" />
+              <input
+                type="text"
+                name="project_id"
+                value="{{ employee.ProjectID }}"
+              />
+              <button type="submit">Modify</button>
+            </form>
+            <form
+              method="POST"
+              action="/delete_employee/{{ employee.EmployeeID }}"
+            >
+              <input
+                type="hidden"
+                name="employee_id"
+                value="{{ employee.EmployeeID }}"
+              />
+              <button type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+
+      <!-- Form to add new employee -->
+      <form method="POST" action="/add_employee">
+        <input
+          type="text"
+          name="first_name"
+          placeholder="First Name"
+          required
+        />
+        <input type="text" name="last_name" placeholder="Last Name" required />
+        <input
+          type="text"
+          name="contact_number"
+          placeholder="Contact Number"
+          required
+        />
+        <input
+          type="text"
+          name="designation"
+          placeholder="Designation"
+          required
+        />
+        <input type="text" name="skills" placeholder="Skills" required />
+        <input
+          type="text"
+          name="project_id"
+          placeholder="Project ID"
+          required
+        />
+        <button type="submit">Add Employee</button>
+      </form>
+    </div>
+  </body>
+</html>

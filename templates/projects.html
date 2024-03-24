@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects</title>
+    <style>
+      /* Navbar styles */
+      .navbar {
+        overflow: hidden;
+        background-color: #4caf50; /* Light green accent color */
+      }
+
+      .navbar a {
+        float: left;
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none;
+      }
+
+      .navbar a:hover {
+        background-color: #ddd;
+        color: black;
+      }
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        /* align-items: center; */
+      }
+      .container {
+        /* width: 90%; */
+      }
+      h2 {
+        text-align: center;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+      th,
+      td {
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+      tr:hover {
+        background-color: #f2f2f2;
+      }
+      form {
+        display: inline;
+      }
+      input[type="text"] {
+        padding: 4px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+      }
+      button {
+        padding: 4px 8px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+      .container {
+        width: 95%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="navbar">
+        <a href="/">Home</a>
+        <a href="/projects">Projects</a>
+        <a href="/employees">Employees</a>
+        <a href="/resources">Resources</a>
+        <a href="/tasks">Tasks</a>
+        <a href="/clients">Clients</a>
+      </div>
+      <h2>Projects</h2>
+
+      <!-- Table to display projects -->
+      <table>
+        <tr>
+          <th>Project ID</th>
+          <th>Project Name</th>
+          <th>Location</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Project Manager ID</th>
+          <th>Actions</th>
+        </tr>
+        {% for project in projects %}
+        <tr>
+          <td>{{ project.ProjectID }}</td>
+          <td>{{ project.ProjectName }}</td>
+          <td>{{ project.Location }}</td>
+          <td>{{ project.StartDate }}</td>
+          <td>{{ project.EndDate }}</td>
+          <td>{{ project.ProjectManagerID }}</td>
+          <td>
+            <form
+              method="POST"
+              action="/modify_project/{{ project.ProjectID }}"
+            >
+              <input
+                type="hidden"
+                name="project_id"
+                value="{{ project.ProjectID }}"
+              />
+              <input
+                type="text"
+                name="project_name"
+                value="{{ project.ProjectName }}"
+              />
+              <input
+                type="text"
+                name="location"
+                value="{{ project.Location }}"
+              />
+              <input
+                type="text"
+                name="start_date"
+                value="{{ project.StartDate }}"
+              />
+              <input
+                type="text"
+                name="end_date"
+                value="{{ project.EndDate }}"
+              />
+              <input
+                type="text"
+                name="project_manager_id"
+                value="{{ project.ProjectManagerID }}"
+              />
+              <button type="submit">Modify</button>
+            </form>
+            <form
+              method="POST"
+              action="/delete_project/{{ project.ProjectID }}"
+            >
+              <input
+                type="hidden"
+                name="project_id"
+                value="{{ project.ProjectID }}"
+              />
+              <button type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+
+      <!-- Form to add new project -->
+      <form method="POST" action="/add_project">
+        <input
+          type="text"
+          name="project_name"
+          placeholder="Project Name"
+          required
+        />
+        <input type="text" name="location" placeholder="Location" required />
+        <input
+          type="text"
+          name="start_date"
+          placeholder="Start Date"
+          required
+        />
+        <input type="text" name="end_date" placeholder="End Date" required />
+        <input
+          type="text"
+          name="project_manager_id"
+          placeholder="Project Manager ID"
+          required
+        />
+        <button type="submit">Add Project</button>
+      </form>
+    </div>
+  </body>
+</html>

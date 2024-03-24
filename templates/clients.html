@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clients</title>
+    <style>
+      /* Navbar styles */
+      .navbar {
+        overflow: hidden;
+        background-color: #4caf50; /* Light green accent color */
+      }
+
+      .navbar a {
+        float: left;
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none;
+      }
+
+      .navbar a:hover {
+        background-color: #ddd;
+        color: black;
+      }
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        /* align-items: center; */
+      }
+      .container{
+        width: 95%;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+      th,
+      td {
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+      tr:hover {
+        background-color: #f2f2f2;
+      }
+      form {
+        display: inline;
+      }
+      input[type="text"] {
+        padding: 4px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+      }
+      button {
+        padding: 4px 8px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+      .container {
+        width: 100%;
+      }
+      h2 {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="navbar">
+        <a href="/">Home</a>
+        <a href="/projects">Projects</a>
+        <a href="/employees">Employees</a>
+        <a href="/resources">Resources</a>
+        <a href="/tasks">Tasks</a>
+        <a href="/clients">Clients</a>
+      </div>
+      <h2>Clients</h2>
+
+      <!-- Table to display clients -->
+      <table>
+        <tr>
+          <th>Client ID</th>
+          <th>Client Name</th>
+          <th>Contact Person</th>
+          <th>Contact Number</th>
+          <th>Project Requirements</th>
+          <th>Actions</th>
+        </tr>
+        {% for client in clients %}
+        <tr>
+          <td>{{ client.ClientID }}</td>
+          <td>{{ client.ClientName }}</td>
+          <td>{{ client.ContactPerson }}</td>
+          <td>{{ client.ContactNumber }}</td>
+          <td>{{ client.ProjectRequirements }}</td>
+          <td>
+            <form method="POST" action="/modify_client/{{ client.ClientID }}">
+              <input
+                type="hidden"
+                name="client_id"
+                value="{{ client.ClientID }}"
+              />
+              <input
+                type="text"
+                name="client_name"
+                value="{{ client.ClientName }}"
+              />
+              <input
+                type="text"
+                name="contact_person"
+                value="{{ client.ContactPerson }}"
+              />
+              <input
+                type="text"
+                name="contact_number"
+                value="{{ client.ContactNumber }}"
+              />
+              <input
+                type="text"
+                name="project_requirements"
+                value="{{ client.ProjectRequirements }}"
+              />
+              <button type="submit">Modify</button>
+            </form>
+            <form method="POST" action="/delete_client/{{ client.ClientID }}">
+              <input
+                type="hidden"
+                name="client_id"
+                value="{{ client.ClientID }}"
+              />
+              <button type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+
+      <!-- Form to add new client -->
+      <form method="POST" action="/add_client">
+        <input
+          type="text"
+          name="client_name"
+          placeholder="Client Name"
+          required
+        />
+        <input
+          type="text"
+          name="contact_person"
+          placeholder="Contact Person"
+          required
+        />
+        <input
+          type="text"
+          name="contact_number"
+          placeholder="Contact Number"
+          required
+        />
+        <input
+          type="text"
+          name="project_requirements"
+          placeholder="Project Requirements"
+          required
+        />
+        <button type="submit">Add Client</button>
+      </form>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tasks</title>
+    <style>
+      /* Navbar styles */
+      .navbar {
+        overflow: hidden;
+        background-color: #4caf50; /* Light green accent color */
+      }
+
+      .navbar a {
+        float: left;
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none;
+      }
+      h2 {
+        text-align: center;
+      }
+      .navbar a:hover {
+        background-color: #ddd;
+        color: black;
+      }
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        /* align-items: center; */
+      }
+      .container {
+        /* width: 90%; */
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+      th,
+      td {
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+      tr:hover {
+        background-color: #f2f2f2;
+      }
+      form {
+        display: inline;
+      }
+      input[type="text"] {
+        padding: 4px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+      }
+      button {
+        padding: 4px 8px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+      .container{
+        width: 95%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="navbar">
+        <a href="/">Home</a>
+        <a href="/projects">Projects</a>
+        <a href="/employees">Employees</a>
+        <a href="/resources">Resources</a>
+        <a href="/tasks">Tasks</a>
+        <a href="/clients">Clients</a>
+      </div>
+      <h2>Tasks</h2>
+
+      <!-- Table to display tasks -->
+      <table>
+        <tr>
+          <th>Task ID</th>
+          <th>Task Name</th>
+          <th>Project ID</th>
+          <th>Employee ID</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Completion Status</th>
+          <th>Actions</th>
+        </tr>
+        {% for task in tasks %}
+        <tr>
+          <td>{{ task.TaskID }}</td>
+          <td>{{ task.TaskName }}</td>
+          <td>{{ task.ProjectID }}</td>
+          <td>{{ task.EmployeeID }}</td>
+          <td>{{ task.StartDate }}</td>
+          <td>{{ task.EndDate }}</td>
+          <td>{{ task.CompletionStatus }}</td>
+          <td>
+            <form method="POST" action="/modify_task/{{ task.TaskID }}">
+              <input type="hidden" name="task_id" value="{{ task.TaskID }}" />
+              <input type="text" name="task_name" value="{{ task.TaskName }}" />
+              <input
+                type="text"
+                name="project_id"
+                value="{{ task.ProjectID }}"
+              />
+              <input
+                type="text"
+                name="employee_id"
+                value="{{ task.EmployeeID }}"
+              />
+              <input
+                type="text"
+                name="start_date"
+                value="{{ task.StartDate }}"
+              />
+              <input type="text" name="end_date" value="{{ task.EndDate }}" />
+              <input
+                type="text"
+                name="completion_status"
+                value="{{ task.CompletionStatus }}"
+              />
+              <button type="submit">Modify</button>
+            </form>
+            <form method="POST" action="/delete_task/{{ task.TaskID }}">
+              <input type="hidden" name="task_id" value="{{ task.TaskID }}" />
+              <button type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+
+      <!-- Form to add new task -->
+      <form method="POST" action="/add_task">
+        <input type="text" name="task_name" placeholder="Task Name" required />
+        <input
+          type="text"
+          name="project_id"
+          placeholder="Project ID"
+          required
+        />
+        <input
+          type="text"
+          name="employee_id"
+          placeholder="Employee ID"
+          required
+        />
+        <input
+          type="text"
+          name="start_date"
+          placeholder="Start Date"
+          required
+        />
+        <input type="text" name="end_date" placeholder="End Date" required />
+        <input
+          type="text"
+          name="completion_status"
+          placeholder="Completion Status"
+          required
+        />
+        <button type="submit">Add Task</button>
+      </form>
+    </div>
+  </body>
+</html>

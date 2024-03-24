@@ -106,6 +106,27 @@ def index():
                            tasks=Task.query.all(),
                            clients=Client.query.all())
 
+# Routes for displaying individual HTML pages
+@app.route('/projects')
+def projects():
+    return render_template('projects.html', projects=Project.query.all())
+
+@app.route('/employees')
+def employees():
+    return render_template('employees.html', employees=Employee.query.all())
+
+@app.route('/resources')
+def resources():
+    return render_template('resources.html', resources=Resource.query.all())
+
+@app.route('/tasks')
+def tasks():
+    return render_template('tasks.html', tasks=Task.query.all())
+
+@app.route('/clients')
+def clients():
+    return render_template('clients.html', clients=Client.query.all())
+
 @app.route('/add_project', methods=['POST'])
 def add_project():
     if request.method == 'POST':
@@ -157,13 +178,13 @@ def add_resource():
         db.session.add(new_resource)
         db.session.commit()
 
-    return redirect(url_for('index'))
+    return redirect(url_for('resources'))
 
 @app.route('/add_task', methods=['POST'])
 def add_task():
     if request.method == 'POST':
         task_name = request.form['task_name']
-        project_id = request.form['project_id']
+        project_id = request.form['projecT_id']
         employee_id = request.form['employee_id']
         start_date = request.form['start_date']
         end_date = request.form['end_date']
@@ -175,7 +196,7 @@ def add_task():
         db.session.add(new_task)
         db.session.commit()
 
-    return redirect(url_for('index'))
+    return redirect(url_for('tasks'))
 
 @app.route('/add_client', methods=['POST'])
 def add_client():
@@ -191,7 +212,118 @@ def add_client():
         db.session.add(new_client)
         db.session.commit()
 
+    return redirect(url_for('clients'))
+
+
+# Routes for modifying data
+@app.route('/modify_project/<int:id>', methods=['POST'])
+def modify_project(id):
+    project = Project.query.get_or_404(id)
+    if request.method == 'POST':
+        project.ProjectName = request.form['project_name']
+        project.Location = request.form['location']
+        project.StartDate = request.form['start_date']
+        project.EndDate = request.form['end_date']
+        project.ProjectManagerID = request.form['project_manager_id']
+
+        db.session.commit()
+
     return redirect(url_for('index'))
+
+@app.route('/modify_employee/<int:id>', methods=['POST'])
+def modify_employee(id):
+    employee = Employee.query.get_or_404(id)
+    if request.method == 'POST':
+        employee.FirstName = request.form['first_name']
+        employee.LastName = request.form['last_name']
+        employee.ContactNumber = request.form['contact_number']
+        employee.Designation = request.form['designation']
+        employee.Skills = request.form['skills']
+        employee.ProjectID = request.form['project_id']
+
+        db.session.commit()
+
+    return redirect(url_for('index'))
+
+@app.route('/modify_resource/<int:id>', methods=['POST'])
+def modify_resource(id):
+    resource = Resource.query.get_or_404(id)
+    if request.method == 'POST':
+        resource.ResourceType = request.form['resource_type']
+        resource.ResourceName = request.form['resource_name']
+        resource.AvailabilityStatus = request.form['availability_status']
+        resource.MaintenanceSchedule = request.form['maintenance_schedule']
+
+        db.session.commit()
+
+    return redirect(url_for('resources'))
+
+@app.route('/modify_task/<int:id>', methods=['POST'])
+def modify_task(id):
+    task = Task.query.get_or_404(id)
+    if request.method == 'POST':
+        task.TaskName = request.form['task_name']
+        task.ProjectID = request.form['project_id']
+        task.EmployeeID = request.form['employee_id']
+        task.StartDate = request.form['start_date']
+        task.EndDate = request.form['end_date']
+        task.CompletionStatus = request.form['completion_status']
+
+        db.session.commit()
+
+    return redirect(url_for('tasks'))
+
+@app.route('/modify_client/<int:id>', methods=['POST'])
+def modify_client(id):
+    client = Client.query.get_or_404(id)
+    if request.method == 'POST':
+        client.ClientName = request.form['client_name']
+        client.ContactPerson = request.form['contact_person']
+        client.ContactNumber = request.form['contact_number']
+        client.ProjectRequirements = request.form['project_requirements']
+
+        db.session.commit()
+
+    return redirect(url_for('clients'))
+
+
+
+# Routes for deleting data
+@app.route('/delete_project/<int:id>', methods=['POST'])
+def delete_project(id):
+    project = Project.query.get_or_404(id)
+    db.session.delete(project)
+    db.session.commit()
+    return redirect(url_for('projects'))
+
+@app.route('/delete_employee/<int:id>', methods=['POST'])
+def delete_employee(id):
+    employee = Employee.query.get_or_404(id)
+    db.session.delete(employee)
+    db.session.commit()
+    return redirect(url_for('employees'))
+
+@app.route('/delete_resource/<int:id>', methods=['POST'])
+def delete_resource(id):
+    resource = Resource.query.get_or_404(id)
+    db.session.delete(resource)
+    db.session.commit()
+    return redirect(url_for('resources'))
+
+@app.route('/delete_task/<int:id>', methods=['POST'])
+def delete_task(id):
+    task = Task.query.get_or_404(id)
+    db.session.delete(task)
+    db.session.commit()
+    return redirect(url_for('tasks'))
+
+@app.route('/delete_client/<int:id>', methods=['POST'])
+def delete_client(id):
+    client = Client.query.get_or_404(id)
+    db.session.delete(client)
+    db.session.commit()
+    return redirect(url_for('clients'))
 
 if __name__ == '__main__':
     app.run(debug=True)
+
